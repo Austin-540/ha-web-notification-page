@@ -70,13 +70,13 @@ p {
         if (title === undefined) {
             document.getElementById("title").textContent = "No title provided";
         } else {
-            document.getElementById("title").textContent = title;
+            document.getElementById("title").textContent = title.replaceAll("%20", " ");
         }
 
         if (content === undefined) {
             document.getElementById("content").textContent = "No content provided";
         } else {
-            document.getElementById("content").textContent = content;
+            document.getElementById("content").textContent = content.replaceAll("%20", " ");
         }
 
     </script>
