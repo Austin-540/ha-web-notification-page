@@ -3,41 +3,43 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
+
     body {
         background: #ffb8f2;
         background-size: 100% 100%;
-background: linear-gradient(150deg, rgba(255, 184, 242, 1) 0%, rgba(255, 107, 107, 1) 50%, rgba(250, 187, 100, 1) 100%);
-background-repeat: no-repeat;
+        background: linear-gradient(150deg, rgba(255, 184, 242, 1) 0%, rgba(255, 107, 107, 1) 50%, rgba(250, 187, 100, 1) 100%);
+        background-repeat: no-repeat;
     }
 
-    html, body {
-    margin: 0;
-    height: 100%;
-}
+    html,
+    body {
+        margin: 0;
+        height: 100%;
+    }
 
-h1, p {
-    font-family: 'Cal Sans';
-    justify-content: center;
-    display: flex;
-    padding: 20px;
-}
+    h1,
+    p {
+        font-family: 'Cal Sans';
+        justify-content: center;
+        display: flex;
+        padding: 20px;
+    }
 
-h1 {
-    font-size: 70px;
-}
+    h1 {
+        font-size: 70px;
+    }
 
-p {
-    font-size: 35px;
-}
+    p {
+        font-size: 35px;
+    }
 
-#panel {
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 10px;
-    height: 90vh;
-    width: 90vw;
-    margin: auto;
-}
-
+    #panel {
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 10px;
+        height: 90vh;
+        width: 90vw;
+        margin: auto;
+    }
 </style>
 
 <head>
@@ -48,8 +50,8 @@ p {
 
 <body>
     <div id="panel">
-    <h1 id="title">Loading notification title...</h1>
-    <p id="content">Loading notification content...</p>
+        <h1 id="title">Loading notification title...</h1>
+        <p id="content">Loading notification content...</p>
 
     </div>
     <script>
@@ -78,6 +80,26 @@ p {
         } else {
             document.getElementById("content").textContent = content.replaceAll("%20", " ");
         }
+
+
+        const wakeLockLength = GetURLParameter("wakelocklen");
+        let wakeLockLengthInt;
+        if (wakeLockLength === undefined) {
+            wakeLockLengthInt = Number.parseInt(wakeLockLength);
+        } else {
+            wakeLockLengthInt = 0;
+        }
+
+        let wakeLock;
+        try {
+            wakeLock = await navigator.wakeLock.request("screen");
+            await new Promise(resolve => setTimeout(resolve, wakeLockLengthInt));
+        } catch (err) {
+            console.error(err);
+        } finally {
+            if (wakeLock) await wakeLock.release();
+        }
+
 
     </script>
 
