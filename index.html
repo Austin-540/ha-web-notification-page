@@ -26,8 +26,17 @@
         const title = GetURLParameter("title");
         const content = GetURLParameter("content");
 
-        document.getElementById("title").textContent = title;
-        document.getElementById("content").textContent = content;
+        if (title === null) {
+            document.getElementById("title").textContent = "No title provided";
+        } else {
+            document.getElementById("title").textContent = title;
+        }
+
+        if (content === null) {
+            document.getElementById("content").textContent = "No content provided";
+        } else {
+            document.getElementById("content").textContent = content;
+        }
 
     </script>
 
