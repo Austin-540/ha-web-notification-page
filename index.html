@@ -66,39 +66,44 @@
             }
         }
 
-        const title = GetURLParameter("title");
-        const content = GetURLParameter("content");
+        async function setup() {
+            const title = GetURLParameter("title");
+            const content = GetURLParameter("content");
 
-        if (title === undefined) {
-            document.getElementById("title").textContent = "No title provided";
-        } else {
-            document.getElementById("title").textContent = title.replaceAll("%20", " ");
+            if (title === undefined) {
+                document.getElementById("title").textContent = "No title provided";
+            } else {
+                document.getElementById("title").textContent = title.replaceAll("%20", " ");
+            }
+
+            if (content === undefined) {
+                document.getElementById("content").textContent = "No content provided";
+            } else {
+                document.getElementById("content").textContent = content.replaceAll("%20", " ");
+            }
+
+
+            const wakeLockLength = GetURLParameter("wakelocklen");
+            let wakeLockLengthInt;
+            if (wakeLockLength === undefined) {
+                wakeLockLengthInt = Number.parseInt(wakeLockLength);
+            } else {
+                wakeLockLengthInt = 0;
+            }
+
+            let wakeLock;
+            try {
+                wakeLock = await navigator.wakeLock.request("screen");
+                await new Promise(resolve => setTimeout(resolve, wakeLockLengthInt));
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if (wakeLock) await wakeLock.release();
+            }
         }
 
-        if (content === undefined) {
-            document.getElementById("content").textContent = "No content provided";
-        } else {
-            document.getElementById("content").textContent = content.replaceAll("%20", " ");
-        }
+        setup()
 
-
-        const wakeLockLength = GetURLParameter("wakelocklen");
-        let wakeLockLengthInt;
-        if (wakeLockLength === undefined) {
-            wakeLockLengthInt = Number.parseInt(wakeLockLength);
-        } else {
-            wakeLockLengthInt = 0;
-        }
-
-        let wakeLock;
-        try {
-            wakeLock = await navigator.wakeLock.request("screen");
-            await new Promise(resolve => setTimeout(resolve, wakeLockLengthInt));
-        } catch (err) {
-            console.error(err);
-        } finally {
-            if (wakeLock) await wakeLock.release();
-        }
 
 
     </script>
